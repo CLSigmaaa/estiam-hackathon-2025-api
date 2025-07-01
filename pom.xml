@@ -74,7 +74,29 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
 	</dependencies>
+
+	<profiles>
+		<profile>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<id>prod</id>
+			<properties>
+				<host>db-hackathon.postgres.database.azure.com</host>
+				<port>5432</port>
+				<db>DBHackathon</db>
+				<db-user>DBHackathon@db-hackathon</db-user>
+				<db-password>B9w!z6P@vX2#eQ4$Nm7L</db-password>
+				<skipUnitTests>true</skipUnitTests>
+			</properties>
+		</profile>
+	</profiles>
+
 
 	<build>
 		<plugins>
