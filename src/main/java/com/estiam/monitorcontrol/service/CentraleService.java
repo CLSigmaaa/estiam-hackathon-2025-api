@@ -17,7 +17,7 @@ public class CentraleService {
     private CentraleRepository centraleRepository;
 
     @Autowired
-    private MqttClient mqttClient;  // Récupéré depuis ton MqttConfig
+    private MqttClient mqttClient;
 
     public List<Centrale> getAllCentrales() {
         return centraleRepository.findAll();
@@ -50,9 +50,7 @@ public class CentraleService {
     private void reloadCentrale(Centrale centrale) throws MqttException {
         if (mqttClient != null && mqttClient.isConnected()) {
             String topicReload = centrale.getTopique() + "/reload";
-            MqttMessage message = new MqttMessage("reload".getBytes());
-            message.setQos(1);
-            mqttClient.publish(topicReload, message);
+            mqttClient.publish(topicReload, new MqttMessage(new byte[0]));
             System.out.println("Reload envoyé sur topic : " + topicReload);
         } else {
             System.err.println("MQTT client non connecté");

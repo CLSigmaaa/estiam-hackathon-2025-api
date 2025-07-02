@@ -31,12 +31,13 @@ public class SalleController {
     }
 
     @PostMapping
+    @JsonView(JsonViews.SalleBasic.class)
     public Salle createSalle(@RequestBody Salle salle) {
         return salleRepository.save(salle);
     }
 
     @PutMapping("/{id}")
-    @JsonView(JsonViews.SalleDetail.class)
+    @JsonView(JsonViews.SalleBasic.class)
     public Salle updateSalle(@PathVariable Integer id, @RequestBody Salle salleDetails) {
         Salle salle = salleRepository.findById(id).orElse(null);
         if (salle != null) {

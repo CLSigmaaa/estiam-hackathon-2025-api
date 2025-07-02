@@ -33,7 +33,6 @@ public class AffectationController {
         return affectationRepository.findById(id).orElse(null);
     }
 
-
     @PostMapping
     @JsonView(JsonViews.AffectationDetail.class)
     public Affectation createAffectation(@RequestBody Affectation affectation) {
