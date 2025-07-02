@@ -15,8 +15,10 @@ public class Centrale {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @Column(unique = true, nullable = false)
     private String nom;
 
+    @Column(unique = true, nullable = false)
     private String topique;
 
     // En ligne, Hors Ligne
@@ -26,4 +28,5 @@ public class Centrale {
     // Getters et setters
     // Enum Etat à définir séparément
 }
+
 
