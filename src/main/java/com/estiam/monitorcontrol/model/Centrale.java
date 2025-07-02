@@ -21,12 +21,9 @@ public class Centrale {
     @Column(unique = true, nullable = false)
     private String topique;
 
-    // En ligne, Hors Ligne
     @Enumerated(EnumType.STRING)
     private Etat etat;
 
-    // Getters et setters
-    // Enum Etat à définir séparément
 }
 
 
