@@ -2,6 +2,7 @@ package com.estiam.monitorcontrol.controller;
 
 import com.estiam.monitorcontrol.model.Affectation;
 import com.estiam.monitorcontrol.repository.AffectationRepository;
+import com.estiam.monitorcontrol.service.CentraleService;
 import com.estiam.monitorcontrol.view.AffectationView;
 import com.estiam.monitorcontrol.view.JsonViews;
 import com.fasterxml.jackson.annotation.JsonView;
@@ -17,6 +18,9 @@ public class AffectationController {
     @Autowired
     private AffectationRepository affectationRepository;
 
+    @Autowired
+    private CentraleService centraleService;
+
     @GetMapping
     @JsonView(JsonViews.AffectationBasic.class)
     public List<Affectation> getAllAffectations() {
@@ -31,8 +35,11 @@ public class AffectationController {
 
 
     @PostMapping
+    @JsonView(JsonViews.AffectationDetail.class)
     public Affectation createAffectation(@RequestBody Affectation affectation) {
-        return affectationRepository.save(affectation);
+        Affectation saved = affectationRepository.save(affectation);
+        centraleService.safeReloadAll();
+        return saved;
     }
 
     @PutMapping("/{id}")
@@ -46,7 +53,9 @@ public class AffectationController {
             affectation.setSalles(affectationDetails.getSalles());
             affectation.setClasses(affectationDetails.getClasses());
             affectation.setDateModification(affectationDetails.getDateModification());
-            return affectationRepository.save(affectation);
+            Affectation updated = affectationRepository.save(affectation);
+            centraleService.safeReloadAll();
+            return updated;
         }
         return null;
     }

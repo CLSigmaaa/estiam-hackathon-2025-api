@@ -19,13 +19,13 @@ public class ClasseController {
     private ClasseRepository classeRepository;
 
     @GetMapping
-    @JsonView(JsonViews.ClasseDetail.class)
+    @JsonView(JsonViews.ClasseBasic.class)
     public List<Classe> getAllClasses() {
         return classeRepository.findAll();
     }
 
     @GetMapping("/{id}")
-    @JsonView(JsonViews.ClasseDetail.class)
+    @JsonView(JsonViews.ClasseBasic.class)
     public Classe getClasseById(@PathVariable Integer id) {
         return classeRepository.findById(id).orElse(null);
     }
