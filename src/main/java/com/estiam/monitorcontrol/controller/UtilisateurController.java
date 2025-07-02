@@ -1,8 +1,8 @@
 package com.estiam.monitorcontrol.controller;
 
 import com.estiam.monitorcontrol.dto.LoginRequest;
-import com.estiam.monitorcontrol.model.User;
-import com.estiam.monitorcontrol.repository.UserRepository;
+import com.estiam.monitorcontrol.model.Utilisateur;
+import com.estiam.monitorcontrol.repository.UtilisateurRepository;
 import com.estiam.monitorcontrol.security.JwtUtil;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,10 +15,10 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/users")
-public class UserController {
+@RequestMapping("/api/utilisateurs")
+public class UtilisateurController {
     @Autowired
-    private UserRepository userRepository;
+    private UtilisateurRepository utilisateurRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -28,11 +28,11 @@ public class UserController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@Valid @RequestBody LoginRequest loginRequest) {
-        User user = userRepository.findByMail(loginRequest.getMail());
-        if (user == null || !passwordEncoder.matches(loginRequest.getMotDePasse(), user.getMotDePasse())) {
+        Utilisateur utilisateur = utilisateurRepository.findByMail(loginRequest.getMail());
+        if (utilisateur == null || !passwordEncoder.matches(loginRequest.getMotDePasse(), utilisateur.getMotDePasse())) {
             return ResponseEntity.status(401).body("Identifiants invalides");
         }
-        String token = jwtUtil.generateToken(user.getMail(), user.getRole());
+        String token = jwtUtil.generateToken(utilisateur.getMail(), utilisateur.getRole());
         return ResponseEntity.ok(token);
     }
 
@@ -53,31 +53,31 @@ public class UserController {
 
     @GetMapping
     @PreAuthorize("hasRole('ADMIN')")
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
+    public List<Utilisateur> getAllUsers() {
+        return utilisateurRepository.findAll();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable Integer id) {
-        Optional<User> user = userRepository.findById(id);
+    public ResponseEntity<Utilisateur> getUserById(@PathVariable Integer id) {
+        Optional<Utilisateur> user = utilisateurRepository.findById(id);
         return user.map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
-    public User createUser(@Valid @RequestBody User user) {
+    public Utilisateur createUser(@Valid @RequestBody Utilisateur user) {
         user.setMotDePasse(passwordEncoder.encode(user.getMotDePasse()));
-        return userRepository.save(user);
+        return utilisateurRepository.save(user);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable Integer id, @Valid @RequestBody User updatedUser) {
-        return userRepository.findById(id)
+    public ResponseEntity<Utilisateur> updateUser(@PathVariable Integer id, @Valid @RequestBody Utilisateur updatedUser) {
+        return utilisateurRepository.findById(id)
                 .map(existingUser -> {
                     existingUser.setMail(updatedUser.getMail());
                     existingUser.setMotDePasse(passwordEncoder.encode(updatedUser.getMotDePasse()));
                     existingUser.setRole(updatedUser.getRole());
-                    userRepository.save(existingUser);
+                    utilisateurRepository.save(existingUser);
                     return ResponseEntity.ok(existingUser);
                 })
                 .orElse(ResponseEntity.notFound().build());
@@ -86,8 +86,8 @@ public class UserController {
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> deleteUser(@PathVariable Integer id) {
-        if (userRepository.existsById(id)) {
-            userRepository.deleteById(id);
+        if (utilisateurRepository.existsById(id)) {
+            utilisateurRepository.deleteById(id);
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.notFound().build();
