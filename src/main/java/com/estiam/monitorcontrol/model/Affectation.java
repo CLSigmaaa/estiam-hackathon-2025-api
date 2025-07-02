@@ -41,7 +41,7 @@ public class Affectation {
             joinColumns = @JoinColumn(name = "affectation_id"),
             inverseJoinColumns = @JoinColumn(name = "salle_id")
     )
-    @JsonView(JsonViews.AffectationDetail.class)
+    @JsonView(JsonViews.AffectationBasic.class)
     private List<Salle> salles;
 
     @ManyToMany
@@ -50,6 +50,6 @@ public class Affectation {
             joinColumns = @JoinColumn(name = "affectation_id"),
             inverseJoinColumns = @JoinColumn(name = "class_id")
     )
-    @JsonView(JsonViews.AffectationDetail.class)
+    @JsonView(JsonViews.AffectationBasic.class)
     private List<Classe> classes;
 }

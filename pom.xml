@@ -87,7 +87,7 @@
 
 		<dependency>
 			<groupId>io.jsonwebtoken</groupId>
-			<artifactId>jjwt-jackson</artifactId> <!-- or jjwt-gson if you prefer -->
+			<artifactId>jjwt-jackson</artifactId>
 			<version>0.11.5</version>
 			<scope>runtime</scope>
 		</dependency>
@@ -131,6 +131,11 @@
 				<db-user>DBHackathon2025</db-user>
 				<db-password>B9w!z6P@vX2#eQ4$Nm7L</db-password>
 				<skipUnitTests>true</skipUnitTests>
+
+				<mqtt-broker-url>tcp://82.64.215.83:1883</mqtt-broker-url>
+				<mqtt-username>hackathon</mqtt-username>
+				<mqtt-password>hack25*</mqtt-password>
+				<mqtt-client-id>monitorcontrol-client</mqtt-client-id>
 			</properties>
 		</profile>
 	</profiles>

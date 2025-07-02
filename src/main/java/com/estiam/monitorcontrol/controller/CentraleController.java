@@ -2,6 +2,7 @@ package com.estiam.monitorcontrol.controller;
 
 import com.estiam.monitorcontrol.model.Centrale;
 import com.estiam.monitorcontrol.repository.CentraleRepository;
+import com.estiam.monitorcontrol.service.CentraleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +17,9 @@ public class CentraleController {
     @Autowired
     private CentraleRepository centraleRepository;
 
+    @Autowired
+    private CentraleService centraleService;
+
     @GetMapping
     public List<Centrale> getAllCentrales() {
         return centraleRepository.findAll();
@@ -26,6 +30,16 @@ public class CentraleController {
         Optional<Centrale> centrale = centraleRepository.findById(id);
         return centrale.map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/reload/{id}")
+    public ResponseEntity<String> reloadCentraleById(@PathVariable Integer id) {
+        try {
+            centraleService.reloadCentraleById(id);
+            return ResponseEntity.ok("Centrale avec ID " + id + " rechargée via MQTT !");
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body("Erreur lors du reload de la centrale : " + e.getMessage());
+        }
     }
 
     @PostMapping

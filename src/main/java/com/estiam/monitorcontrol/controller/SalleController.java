@@ -19,13 +19,13 @@ public class SalleController {
     private SalleRepository salleRepository;
 
     @GetMapping
-    @JsonView(JsonViews.SalleDetail.class)
+    @JsonView(JsonViews.SalleBasic.class)
     public List<Salle> getAllSalles() {
         return salleRepository.findAll();
     }
 
     @GetMapping("/{id}")
-    @JsonView(JsonViews.SalleDetail.class)
+    @JsonView(JsonViews.SalleBasic.class)
     public Salle getSalleById(@PathVariable Integer id) {
         return salleRepository.findById(id).orElse(null);
     }
